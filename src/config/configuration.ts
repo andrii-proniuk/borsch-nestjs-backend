@@ -25,5 +25,8 @@ export default () => ({
     accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET || 'secret',
     accessTokenExpirationTime:
       parseInt(process.env.JSW_ACCESS_TOKEN_EXPIRATION_TIME) || 28800,
+    refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET || 'secret',
+    refreshTokenExpirationTime:
+      parseInt(process.env.JSW_REFRESH_TOKEN_EXPIRATION_TIME) || 28800,
   },
 });

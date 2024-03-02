@@ -26,7 +26,7 @@ export class PostgresqlConfigService implements TypeOrmOptionsFactory {
           : ['dist/src/repositories/entities/**/*.entity.js'],
       synchronize: false,
       namingStrategy: new SnakeNamingStrategy(),
-      // logging: true,
+      logging: true,
     };
   }
 }

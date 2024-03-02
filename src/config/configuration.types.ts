@@ -20,4 +20,6 @@ export interface DatabaseConfig {
 export interface JWTConfig {
   accessTokenSecret: string;
   accessTokenExpirationTime: number;
+  refreshTokenSecret: string;
+  refreshTokenExpirationTime: number;
 }

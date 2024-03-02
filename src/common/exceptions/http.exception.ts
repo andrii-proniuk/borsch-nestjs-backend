@@ -44,12 +44,11 @@ export class ForbiddenException extends HttpException {
 
 // 404
 export class NotFoundException extends HttpException {
-  constructor(data: { message?: string; code?: string }) {
+  constructor(code?: string) {
     super(
       {
         statusCode: HttpStatus.NOT_FOUND,
-        errCode: data?.code ?? '',
-        message: data?.message ?? '',
+        errCode: code ?? '',
       },
       HttpStatus.NOT_FOUND,
     );
