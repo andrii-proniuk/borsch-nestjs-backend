@@ -8,11 +8,17 @@ import { TransactionService } from '../core/postgresql/transaction.service';
 import { EmailVerificationCodeRepositoryService } from '../repositories/email-verification-code/email-verification-code-repository.service';
 import { EmailVerificationCode } from '../repositories/entities/email-verification-code.entity';
 import { DefaultSuccessResponseDto } from '../common/response-dto/default-success.response-dto';
-import { JWTConfig } from '../config/configuration.types';
+import { JwtConfig } from '../config/configuration.types';
 import { User } from '../repositories/entities/user.entity';
 import { SignUpResponseDto } from './response-dto/sign-up.response-dto';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInResponseDto } from './response-dto/sign-in.response-dto';
+import { RefreshTokensResponseDto } from './response-dto/refresh-tokens.response-dto';
+
+interface Tokens {
+  accessToken: string;
+  refreshToken: string;
+}
 
 @Injectable()
 export class AuthService {
@@ -39,6 +45,13 @@ export class AuthService {
         transactionManager,
       );
 
+      // const { code } = await this.emailVerificationCodeRepositoryService.create(
+      //   user.id,
+      //   transactionManager,
+      // );
+
+      // await this.emailService.sendEmailVerificationCode(user.email, code);
+
       return new SignUpResponseDto();
     });
   }
@@ -60,7 +73,7 @@ export class AuthService {
     });
   }
 
-  async singIn(user: User): Promise<SignInResponseDto> {
+  private async generateTokens(user: User): Promise<Tokens> {
     const payload = {
       id: user.id,
     };
@@ -70,7 +83,7 @@ export class AuthService {
       accessTokenExpirationTime,
       refreshTokenSecret,
       refreshTokenExpirationTime,
-    } = this.configService.get<JWTConfig>('jwt');
+    } = this.configService.get<JwtConfig>('jwt');
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: accessTokenSecret,
@@ -82,10 +95,29 @@ export class AuthService {
       expiresIn: refreshTokenExpirationTime,
     });
 
-    return plainToInstance(SignInResponseDto, {
-      profile: user.profile,
+    await this.usersRepositoryService.updateRefreshToken(user.id, refreshToken);
+
+    return {
       accessToken,
       refreshToken,
+    };
+  }
+
+  async singIn(user: User): Promise<SignInResponseDto> {
+    const tokens = await this.generateTokens(user);
+
+    return plainToInstance(SignInResponseDto, {
+      ...tokens,
+      profile: user.profile,
+    });
+  }
+
+  async refreshTokens(user: User): Promise<RefreshTokensResponseDto> {
+    const tokens = await this.generateTokens(user);
+
+    return plainToInstance(RefreshTokensResponseDto, {
+      ...tokens,
+      profile: user.profile,
     });
   }
 }

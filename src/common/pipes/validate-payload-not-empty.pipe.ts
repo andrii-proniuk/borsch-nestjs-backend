@@ -12,5 +12,7 @@ export class ValidatePayloadNotEmptyPipe implements PipeTransform {
     if (payloadDataEmpty) {
       throw new BadRequestException();
     }
+
+    return data;
   }
 }

@@ -17,6 +17,7 @@ const usersTable = new Table({
     { name: 'password', type: 'varchar' },
     { name: 'email_verified', type: 'boolean', default: 'false' },
     { name: 'role', type: 'varchar', length: '16', default: 'user' },
+    { name: 'refresh_token', type: 'varchar', isNullable: true },
     { name: 'created_at', type: 'timestamp', default: 'current_timestamp' },
     { name: 'updated_at', type: 'timestamp', default: 'current_timestamp' },
   ],
@@ -55,7 +56,7 @@ export class AddUserTable1709379086944 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(usersTable);
     await queryRunner.dropTable(emailVerificationCodesTable);
+    await queryRunner.dropTable(usersTable);
   }
 }

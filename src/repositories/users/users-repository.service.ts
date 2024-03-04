@@ -43,6 +43,18 @@ export class UsersRepositoryService {
     );
   }
 
+  async getById(
+    id: number,
+    withProfile?: boolean,
+    transactionManager?: EntityManager,
+  ): Promise<User> {
+    return this.getUserUseCase.exec(
+      { id },
+      withProfile && { profile: true },
+      transactionManager,
+    );
+  }
+
   async setUserEmailAsVerified(
     id: number,
     transactionManager?: EntityManager,
@@ -50,6 +62,18 @@ export class UsersRepositoryService {
     return this.updateUserUseCase.exec(
       id,
       { emailVerified: true },
+      transactionManager,
+    );
+  }
+
+  async updateRefreshToken(
+    id: number,
+    refreshToken: string,
+    transactionManager?: EntityManager,
+  ): Promise<void> {
+    return this.updateUserUseCase.exec(
+      id,
+      { refreshToken },
       transactionManager,
     );
   }

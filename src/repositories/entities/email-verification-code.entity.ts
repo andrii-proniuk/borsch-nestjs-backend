@@ -6,9 +6,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { TABLES } from '../../core/postgresql/tables.constants';
 import { User } from './user.entity';
 
-@Entity()
+@Entity(TABLES.EMAIL_VERIFICATION_CODES)
 export class EmailVerificationCode {
   @PrimaryGeneratedColumn()
   id: number;

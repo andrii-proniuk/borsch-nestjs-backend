@@ -4,7 +4,6 @@ export default () => ({
   environment: process.env.NODE_ENV,
   host: process.env.HOST,
   port: parseInt(process.env.PORT),
-  origins: process.env.ORIGINS,
   cors: {
     origins: process.env.ORIGINS || 'http://localhost:3000',
     methods: process.env.METHODS || 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -24,9 +23,15 @@ export default () => ({
   jwt: {
     accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET || 'secret',
     accessTokenExpirationTime:
-      parseInt(process.env.JSW_ACCESS_TOKEN_EXPIRATION_TIME) || 28800,
+      process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME || '15m',
     refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET || 'secret',
     refreshTokenExpirationTime:
-      parseInt(process.env.JSW_REFRESH_TOKEN_EXPIRATION_TIME) || 28800,
+      process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME || '30d',
+  },
+  email: {
+    clientId: process.env.EMAIL_CLIENT_ID,
+    clientSecret: process.env.EMAIL_CLIENT_SECRET,
+    defaultFrom: process.env.EMAIL_DEFAULT_FROM,
+    refreshToken: process.env.EMAIL_REFRESH_TOKEN,
   },
 });

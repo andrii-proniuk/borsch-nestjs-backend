@@ -1,9 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { isString, length } from 'class-validator';
-import bcrypt from 'bcrypt';
+import { isEmpty, isString, maxLength, minLength } from 'class-validator';
+import * as bcrypt from 'bcrypt';
 import { InnerRequest } from '../../common/interfaces/inner-request.interface';
 import {
   AUTH_ERRORS,
+  AUTH_VALIDATION_ERRORS,
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from '../auth.constants';
@@ -11,19 +12,33 @@ import { BadRequestException } from '../../common/exceptions/http.exception';
 
 @Injectable()
 export class PasswordCorrectGuard implements CanActivate {
-  private validate(value: any): value is string {
-    return (
-      isString(value) && length(value, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
-    );
+  private validate(value: any): void {
+    if (isEmpty(value)) {
+      throw new BadRequestException(AUTH_VALIDATION_ERRORS.PASSWORD_EMPTY);
+    }
+
+    if (!isString(value)) {
+      throw new BadRequestException(AUTH_VALIDATION_ERRORS.PASSWORD_INVALID);
+    }
+
+    if (!minLength(value, PASSWORD_MIN_LENGTH)) {
+      throw new BadRequestException(
+        AUTH_VALIDATION_ERRORS.PASSWORD_MIN_LENGTH_INVALID,
+      );
+    }
+
+    if (!maxLength(value, PASSWORD_MAX_LENGTH)) {
+      throw new BadRequestException(
+        AUTH_VALIDATION_ERRORS.PASSWORD_MAX_LENGTH_INVALID,
+      );
+    }
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<InnerRequest>();
     const { password } = req.body;
 
-    if (!this.validate(password)) {
-      return true;
-    }
+    this.validate(password);
 
     const { user } = req.locals;
 

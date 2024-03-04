@@ -15,7 +15,7 @@ const profilesTable = new Table({
     },
     { name: 'user_id', type: 'integer' },
     { name: 'nickname', type: 'varchar', length: '32' },
-    { name: 'fullname', type: 'varchar', length: '64' },
+    { name: 'fullname', type: 'varchar', length: '64', isNullable: true },
     { name: 'created_at', type: 'timestamp', default: 'current_timestamp' },
     { name: 'updated_at', type: 'timestamp', default: 'current_timestamp' },
   ],
@@ -64,7 +64,7 @@ export class AddProfilesTable1709379652942 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(profilesTable);
     await queryRunner.dropTable(socialMediaTable);
+    await queryRunner.dropTable(profilesTable);
   }
 }

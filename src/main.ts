@@ -15,10 +15,10 @@ import { AnyExceptionFilter } from './errors.filter';
 const setupCors = (app) => {
   const configService: ConfigService = app.get(ConfigService);
 
-  const { origins, methods } = configService.get<CorsConfig>('cors');
+  const { methods } = configService.get<CorsConfig>('cors');
 
   app.enableCors({
-    origin: origins.split(','),
+    // origin: origins.split(','),
     methods,
   });
 };
@@ -29,6 +29,7 @@ const composeSwaggerDocument = (app) => {
     .setDescription('The MDPeople API')
     .setVersion('1.0')
     .addBearerAuth({ type: 'http', in: 'header' }, 'default')
+    .addBearerAuth({ type: 'http', in: 'header' }, 'refresh')
     .build();
 
   return SwaggerModule.createDocument(app, options);

@@ -6,6 +6,7 @@ import {
 } from 'nest-winston';
 import * as winston from 'winston';
 import configuration from '../config/configuration';
+import { configurationValidationSchema } from '../config/configuration.validation-schema';
 import { PostgresqlModule } from './postgresql/postgresql.module';
 import { TransactionService } from './postgresql/transaction.service';
 
@@ -14,6 +15,7 @@ import { TransactionService } from './postgresql/transaction.service';
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
+      validationSchema: configurationValidationSchema,
       isGlobal: true,
     }),
     WinstonModule.forRoot({
@@ -23,7 +25,7 @@ import { TransactionService } from './postgresql/transaction.service';
           format: winston.format.combine(
             winston.format.timestamp(),
             winston.format.ms(),
-            nestWinstonModuleUtilities.format.nestLike('MD', {
+            nestWinstonModuleUtilities.format.nestLike('Borsch', {
               colors: true,
               prettyPrint: true,
             }),
@@ -33,10 +35,7 @@ import { TransactionService } from './postgresql/transaction.service';
     }),
     PostgresqlModule,
   ],
-  exports: [
-    PostgresqlModule,
-    TransactionService,
-  ],
+  exports: [PostgresqlModule, TransactionService],
   providers: [TransactionService],
 })
 export class CoreModule {}

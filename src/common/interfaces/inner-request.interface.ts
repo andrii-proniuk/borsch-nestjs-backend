@@ -8,5 +8,6 @@ export interface InnerRequestLocals {
 }
 
 export interface InnerRequest extends Request {
+  user: User;
   locals: InnerRequestLocals;
 }
