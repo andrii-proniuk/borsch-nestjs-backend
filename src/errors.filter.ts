@@ -30,6 +30,8 @@ export class AnyExceptionFilter extends BaseExceptionFilter {
         ? error.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    console.log(error);
+
     if (!statusCode || statusCode === HttpStatus.INTERNAL_SERVER_ERROR) {
       this.logger.error('Internal server error', {
         url: request.url,
@@ -43,6 +45,7 @@ export class AnyExceptionFilter extends BaseExceptionFilter {
     response.status(statusCode).json({
       statusCode: statusCode || HttpStatus.INTERNAL_SERVER_ERROR,
       message: error.message,
+      errCode: error.response.errCode,
       validationErrors: error.response.message,
     });
   }

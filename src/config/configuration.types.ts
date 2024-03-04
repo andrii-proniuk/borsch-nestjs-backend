@@ -17,7 +17,16 @@ export interface DatabaseConfig {
   database: string;
 }
 
-export interface JWTConfig {
+export interface JwtConfig {
   accessTokenSecret: string;
-  accessTokenExpirationTime: number;
+  accessTokenExpirationTime: string;
+  refreshTokenSecret: string;
+  refreshTokenExpirationTime: string;
+}
+
+export interface EmailConfig {
+  clientId: string;
+  clientSecret: string;
+  defaultFrom: string;
+  refreshToken: string;
 }

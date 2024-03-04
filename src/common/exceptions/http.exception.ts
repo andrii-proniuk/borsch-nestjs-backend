@@ -16,12 +16,11 @@ export class BadRequestException extends HttpException {
 
 // 401
 export class UnauthorizedException extends HttpException {
-  constructor(data: { message?: string; code?: string }) {
+  constructor(code?: string) {
     super(
       {
         statusCode: HttpStatus.UNAUTHORIZED,
-        errCode: data?.code ?? '',
-        message: data?.message ?? '',
+        errCode: code ?? '',
       },
       HttpStatus.UNAUTHORIZED,
     );
@@ -30,12 +29,11 @@ export class UnauthorizedException extends HttpException {
 
 // 403
 export class ForbiddenException extends HttpException {
-  constructor(data: { message?: string; code?: string }) {
+  constructor(code?: string) {
     super(
       {
         statusCode: HttpStatus.FORBIDDEN,
-        errCode: data?.code ?? '',
-        message: data?.message ?? '',
+        errCode: code ?? '',
       },
       HttpStatus.FORBIDDEN,
     );
@@ -44,12 +42,11 @@ export class ForbiddenException extends HttpException {
 
 // 404
 export class NotFoundException extends HttpException {
-  constructor(data: { message?: string; code?: string }) {
+  constructor(code?: string) {
     super(
       {
         statusCode: HttpStatus.NOT_FOUND,
-        errCode: data?.code ?? '',
-        message: data?.message ?? '',
+        errCode: code ?? '',
       },
       HttpStatus.NOT_FOUND,
     );
