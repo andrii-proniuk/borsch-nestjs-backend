@@ -26,7 +26,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('sign-up')
-  @UseGuards(EmailAvailabilityGuard, NicknameAvailabilityGuard)
+  @UseGuards(NicknameAvailabilityGuard, EmailAvailabilityGuard)
   async signUp(
     @Body(ValidatePayloadNotEmptyPipe) signUpDto: SignUpDto,
   ): Promise<SignUpResponseDto> {

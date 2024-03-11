@@ -14,23 +14,31 @@ import { BadRequestException } from '../../common/exceptions/http.exception';
 export class PasswordCorrectGuard implements CanActivate {
   private validate(value: any): void {
     if (isEmpty(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.PASSWORD_EMPTY);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.PASSWORD_EMPTY,
+        property: 'password',
+      });
     }
 
     if (!isString(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.PASSWORD_INVALID);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.PASSWORD_INVALID,
+        property: 'password',
+      });
     }
 
     if (!minLength(value, PASSWORD_MIN_LENGTH)) {
-      throw new BadRequestException(
-        AUTH_VALIDATION_ERRORS.PASSWORD_MIN_LENGTH_INVALID,
-      );
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.PASSWORD_MIN_LENGTH_INVALID,
+        property: 'password',
+      });
     }
 
     if (!maxLength(value, PASSWORD_MAX_LENGTH)) {
-      throw new BadRequestException(
-        AUTH_VALIDATION_ERRORS.PASSWORD_MAX_LENGTH_INVALID,
-      );
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.PASSWORD_MAX_LENGTH_INVALID,
+        property: 'password',
+      });
     }
   }
 
@@ -45,7 +53,9 @@ export class PasswordCorrectGuard implements CanActivate {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new BadRequestException(AUTH_ERRORS.INVALID_EMAIL_OR_PASSWORD);
+      throw new BadRequestException({
+        code: AUTH_ERRORS.INVALID_EMAIL_OR_PASSWORD,
+      });
     }
 
     return true;
