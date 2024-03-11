@@ -17,23 +17,31 @@ export class NicknameAvailabilityGuard implements CanActivate {
 
   private validate(value: any): void {
     if (isEmpty(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.NICKNAME_EMPTY);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.NICKNAME_EMPTY,
+        property: 'nickname',
+      });
     }
 
     if (!isString(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.NICKNAME_INVALID);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.NICKNAME_INVALID,
+        property: 'nickname',
+      });
     }
 
     if (!minLength(value, NICKNAME_MIN_LENGTH)) {
-      throw new BadRequestException(
-        AUTH_VALIDATION_ERRORS.NICKNAME_MIN_LENGTH_INVALID,
-      );
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.NICKNAME_MIN_LENGTH_INVALID,
+        property: 'nickname',
+      });
     }
 
     if (!maxLength(value, NICKNAME_MAX_LENGTH)) {
-      throw new BadRequestException(
-        AUTH_VALIDATION_ERRORS.NICKNAME_MAX_LENGTH_INVALID,
-      );
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.NICKNAME_MAX_LENGTH_INVALID,
+        property: 'nickname',
+      });
     }
   }
 
@@ -47,7 +55,10 @@ export class NicknameAvailabilityGuard implements CanActivate {
       await this.profilesRepositoryService.existsByNickname(nickname);
 
     if (isNicknameExists) {
-      throw new BadRequestException(AUTH_ERRORS.NICKNAME_ALREADY_TAKEN);
+      throw new BadRequestException({
+        code: AUTH_ERRORS.NICKNAME_ALREADY_TAKEN,
+        property: 'nickname',
+      });
     }
 
     return true;

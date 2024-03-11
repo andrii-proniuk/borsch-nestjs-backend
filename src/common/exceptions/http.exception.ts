@@ -1,13 +1,21 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { ICustomValidationError } from '../interfaces/custom-validation-error.interface';
 
 // 400
 export class BadRequestException extends HttpException {
-  constructor(code?: string) {
+  constructor(data?: {
+    code?: string;
+    property?: string;
+    validationErrors?: ICustomValidationError[];
+  }) {
+    const { code, property, validationErrors } = data;
+
     super(
       {
         statusCode: HttpStatus.BAD_REQUEST,
-        errCode: code ?? '',
-        // message: data?.message ?? '',
+        errCode: code,
+        property,
+        validationErrors,
       },
       HttpStatus.BAD_REQUEST,
     );

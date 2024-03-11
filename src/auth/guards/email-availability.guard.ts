@@ -11,11 +11,17 @@ export class EmailAvailabilityGuard implements CanActivate {
 
   private validate(value: any): void {
     if (isEmpty(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.EMAIL_EMPTY);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.EMAIL_EMPTY,
+        property: 'email',
+      });
     }
 
     if (!isEmail(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.EMAIL_INVALID);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.EMAIL_INVALID,
+        property: 'email',
+      });
     }
   }
 
@@ -29,7 +35,10 @@ export class EmailAvailabilityGuard implements CanActivate {
       await this.usersRepositoryService.existsByEmail(email);
 
     if (isEmailAlreadyTaken) {
-      throw new BadRequestException(AUTH_ERRORS.EMAIL_ALREADY_TAKEN);
+      throw new BadRequestException({
+        code: AUTH_ERRORS.EMAIL_ALREADY_TAKEN,
+        property: 'email',
+      });
     }
 
     return true;

@@ -11,11 +11,17 @@ export class UserExistsByEmailGuard implements CanActivate {
 
   private validate(value: any): void {
     if (isEmpty(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.EMAIL_EMPTY);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.EMAIL_EMPTY,
+        property: 'email',
+      });
     }
 
     if (!isEmail(value)) {
-      throw new BadRequestException(AUTH_VALIDATION_ERRORS.EMAIL_INVALID);
+      throw new BadRequestException({
+        code: AUTH_VALIDATION_ERRORS.EMAIL_INVALID,
+        property: 'email',
+      });
     }
   }
 
@@ -29,7 +35,9 @@ export class UserExistsByEmailGuard implements CanActivate {
     const user = await this.usersRepositoryService.getByEmail(email, true);
 
     if (!user) {
-      throw new BadRequestException(AUTH_ERRORS.INVALID_EMAIL_OR_PASSWORD);
+      throw new BadRequestException({
+        code: AUTH_ERRORS.INVALID_EMAIL_OR_PASSWORD,
+      });
     }
 
     req.locals = { user };

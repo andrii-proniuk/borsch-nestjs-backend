@@ -8,9 +8,12 @@ import {
 import * as basicAuth from 'express-basic-auth';
 import { ValidationPipe } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { ValidationError } from 'class-validator';
 import { AppModule } from './app.module';
 import { CorsConfig, SwaggerConfig } from './config/configuration.types';
 import { AnyExceptionFilter } from './errors.filter';
+import { BadRequestException } from './common/exceptions/http.exception';
+import { ICustomValidationError } from './common/interfaces/custom-validation-error.interface';
 
 const setupCors = (app) => {
   const configService: ConfigService = app.get(ConfigService);
@@ -65,11 +68,22 @@ const createValidationPipe = () => {
   return new ValidationPipe({
     transform: true,
     whitelist: true,
+    stopAtFirstError: true,
+    exceptionFactory: (errors: ValidationError[]) => {
+      return new BadRequestException({
+        validationErrors: errors.map<ICustomValidationError>((error) => ({
+          property: error.property,
+          code: Object.values(error.constraints)[0],
+        })),
+      });
+    },
   });
 };
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
 
   setupCors(app);
   setupSwagger(app);
@@ -81,7 +95,7 @@ async function bootstrap() {
     ),
   );
 
-  await app.listen(3000);
+  await app.listen(configService.get<number>('port'));
 }
 
 bootstrap();
