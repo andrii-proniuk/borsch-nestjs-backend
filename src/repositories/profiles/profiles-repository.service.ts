@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { SignUpDto } from '../../auth/dto/sign-up.dto';
-import { Profile } from '../entities/profile.entity';
+import { Profile } from '../entities/profile/profile.entity';
+import { User } from '../entities/user/user.entity';
 import { CreateProfileUseCase } from './use-cases/create-profile.usecase';
 import { ProfileExistsUseCase } from './use-cases/profile-exists.usecase';
 import { GetProfileUseCase } from './use-cases/get-profile.usecase';
@@ -15,15 +16,11 @@ export class ProfilesRepositoryService {
   ) {}
 
   async create(
-    userId: number,
+    user: User,
     signUpDto: SignUpDto,
     transactionManager?: EntityManager,
   ): Promise<Profile> {
-    return this.createProfileUseCase.exec(
-      userId,
-      signUpDto,
-      transactionManager,
-    );
+    return this.createProfileUseCase.exec(user, signUpDto, transactionManager);
   }
 
   async existsById(

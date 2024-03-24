@@ -2,12 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { TABLES } from '../../core/postgresql/tables.constants';
-import { Profile } from './profile.entity';
+import { TABLES } from '../../../core/postgresql/tables.constants';
+import { Profile } from '../profile/profile.entity';
 
 export enum UserRoleEnum {
   Admin = 'admin',
@@ -16,8 +17,11 @@ export enum UserRoleEnum {
 }
 
 @Entity(TABLES.USERS)
+@Index('uniq_users_email', ['email'], { unique: true })
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    primaryKeyConstraintName: 'pk_users_id',
+  })
   id: number;
 
   @OneToOne(() => Profile, (profile) => profile.user)
@@ -41,13 +45,13 @@ export class User {
   @CreateDateColumn({
     nullable: true,
     update: false,
-    default: 'CURRENT_TIMESTAMP()',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: string;
 
   @UpdateDateColumn({
     nullable: true,
-    default: 'CURRENT_TIMESTAMP()',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: string;
 }

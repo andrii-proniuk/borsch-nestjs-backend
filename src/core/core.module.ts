@@ -5,6 +5,7 @@ import {
   WinstonModule,
 } from 'nest-winston';
 import * as winston from 'winston';
+import { JwtModule } from '@nestjs/jwt';
 import configuration from '../config/configuration';
 import { configurationValidationSchema } from '../config/configuration.validation-schema';
 import { PostgresqlModule } from './postgresql/postgresql.module';
@@ -34,8 +35,9 @@ import { TransactionService } from './postgresql/transaction.service';
       ],
     }),
     PostgresqlModule,
+    JwtModule,
   ],
-  exports: [PostgresqlModule, TransactionService],
+  exports: [PostgresqlModule, TransactionService, JwtModule],
   providers: [TransactionService],
 })
 export class CoreModule {}

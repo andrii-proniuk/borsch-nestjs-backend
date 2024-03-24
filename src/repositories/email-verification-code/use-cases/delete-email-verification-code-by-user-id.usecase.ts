@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import { EmailVerificationCode } from '../../entities/email-verification-code.entity';
+import { EmailVerificationCode } from '../../entities/user/email-verification-code.entity';
 
 @Injectable()
 export class DeleteEmailVerificationCodeByUserIdUseCase {

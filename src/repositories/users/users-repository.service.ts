@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { SignUpDto } from '../../auth/dto/sign-up.dto';
-import { User } from '../entities/user.entity';
+import { User } from '../entities/user/user.entity';
 import { CreateUserUseCase } from './use-cases/create-user.usecase';
 import { UserExistsUseCase } from './use-cases/user-exists.usecase';
 import { GetUserUseCase } from './use-cases/get-user.usecase';

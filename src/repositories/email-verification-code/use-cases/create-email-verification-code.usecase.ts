@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
-import { EmailVerificationCode } from '../../entities/email-verification-code.entity';
+import { EmailVerificationCode } from '../../entities/user/email-verification-code.entity';
 import { VERIFICATION_CODE_LENGTH } from '../../../auth/auth.constants';
 
 @Injectable()

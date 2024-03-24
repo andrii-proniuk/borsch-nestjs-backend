@@ -12,7 +12,7 @@ export const configurationValidationSchema = Joi.object({
   SWAGGER_PASSWORD: Joi.string().default('admin'),
   POSTGRES_HOST: Joi.string().required(),
   POSTGRES_PORT: Joi.number().required(),
-  POSTGRES_USERNAME: Joi.string().required(),
+  POSTGRES_USER: Joi.string().required(),
   POSTGRES_PASSWORD: Joi.string().required(),
   POSTGRES_DB: Joi.string().required(),
   JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),

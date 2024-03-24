@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager, FindOptionsWhere } from 'typeorm';
-import { Profile } from '../../entities/profile.entity';
+import { Profile } from '../../entities/profile/profile.entity';
 
 @Injectable()
 export class GetProfileUseCase {

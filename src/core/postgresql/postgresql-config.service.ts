@@ -24,7 +24,7 @@ export class PostgresqlConfigService implements TypeOrmOptionsFactory {
         environment === 'test'
           ? [process.cwd() + '/src/repositories/entities/**/*.entity.ts']
           : ['dist/src/repositories/entities/**/*.entity.js'],
-      synchronize: false,
+      synchronize: true,
       namingStrategy: new SnakeNamingStrategy(),
       // logging: true,
     };

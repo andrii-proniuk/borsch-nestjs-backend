@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager, FindOptionsRelations, FindOptionsWhere } from 'typeorm';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { User } from '../../entities/user.entity';
+import { User } from '../../entities/user/user.entity';
 
 @Injectable()
 export class GetUserUseCase {

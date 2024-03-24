@@ -6,20 +6,26 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TABLES } from '../../core/postgresql/tables.constants';
+import { TABLES } from '../../../core/postgresql/tables.constants';
 import { User } from './user.entity';
 
 @Entity(TABLES.EMAIL_VERIFICATION_CODES)
 export class EmailVerificationCode {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({
+    primaryKeyConstraintName: 'pk_email-verification-codes_id',
+  })
   id: number;
+
+  @OneToOne(() => User)
+  @JoinColumn({
+    name: 'userId',
+    referencedColumnName: 'id',
+    foreignKeyConstraintName: 'fk_email-verification-codes_users_user-id',
+  })
+  user: User;
 
   @Column()
   userId: number;
-
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
 
   @Column()
   code: string;
@@ -27,7 +33,7 @@ export class EmailVerificationCode {
   @CreateDateColumn({
     nullable: true,
     update: false,
-    default: 'current_timestamp()',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt: string;
 }
