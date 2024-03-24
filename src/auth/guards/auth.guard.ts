@@ -25,6 +25,12 @@ export class AuthGuard implements CanActivate {
   }
 
   private extractBearerToken(req: InnerRequest): string | undefined {
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader) {
+      return undefined;
+    }
+
     const [bearer, token] = req.headers['authorization']?.split(' ');
 
     return bearer === 'Bearer' ? token : undefined;

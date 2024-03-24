@@ -1,11 +1,5 @@
-import { Exclude, Expose } from 'class-transformer';
-import { AUTH_SUCCESS_MESSAGES } from '../auth.constants';
+import { Exclude } from 'class-transformer';
+import { SignInResponseDto } from './sign-in.response-dto';
 
 @Exclude()
-export class SignUpResponseDto {
-  @Expose()
-  success = true;
-
-  @Expose()
-  message = AUTH_SUCCESS_MESSAGES.ACCOUNT_CREATED;
-}
+export class SignUpResponseDto extends SignInResponseDto {}

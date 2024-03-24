@@ -1,6 +1,6 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 import { InnerRequest } from '../interfaces/inner-request.interface';
-import { User } from '../../repositories/entities/user.entity';
+import { User } from '../../repositories/entities/user/user.entity';
 
 export const GetUser = createParamDecorator(
   (property: keyof User | undefined, ctx: ExecutionContext) => {

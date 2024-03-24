@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { UsersRepositoryModule } from '../repositories/users/users-repository.module';
 import { ProfilesRepositoryModule } from '../repositories/profiles/profiles-repository.module';
 import { EmailVerificationCodeRepositoryModule } from '../repositories/email-verification-code/email-verification-code-repository.module';
@@ -12,7 +11,6 @@ import { AuthService } from './auth.service';
     UsersRepositoryModule,
     ProfilesRepositoryModule,
     EmailVerificationCodeRepositoryModule,
-    JwtModule,
     EmailModule,
   ],
   controllers: [AuthController],

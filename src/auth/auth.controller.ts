@@ -1,9 +1,16 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ValidatePayloadNotEmptyPipe } from '../common/pipes/validate-payload-not-empty.pipe';
 import { Locals } from '../common/decorators/locals.decorator';
-import { User } from '../repositories/entities/user.entity';
-import { EmailVerificationCode } from '../repositories/entities/email-verification-code.entity';
+import { User } from '../repositories/entities/user/user.entity';
+import { EmailVerificationCode } from '../repositories/entities/user/email-verification-code.entity';
 import { DefaultSuccessResponseDto } from '../common/response-dto/default-success.response-dto';
 import { GetUser } from '../common/decorators/get-user.decorator';
 import { AuthService } from './auth.service';
@@ -35,6 +42,7 @@ export class AuthController {
 
   @Post('sign-in')
   @UseGuards(UserExistsByEmailGuard, PasswordCorrectGuard)
+  @HttpCode(200)
   async signIn(
     @Body(ValidatePayloadNotEmptyPipe) signInDto: SignInDto,
     @Locals('user') user: User,

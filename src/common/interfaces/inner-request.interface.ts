@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { EmailVerificationCode } from '../../repositories/entities/email-verification-code.entity';
-import { User } from '../../repositories/entities/user.entity';
+import { EmailVerificationCode } from '../../repositories/entities/user/email-verification-code.entity';
+import { User } from '../../repositories/entities/user/user.entity';
 
 export interface InnerRequestLocals {
   emailVerificationCode?: EmailVerificationCode;

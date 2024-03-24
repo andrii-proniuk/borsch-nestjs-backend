@@ -6,10 +6,10 @@ import { UsersRepositoryService } from '../repositories/users/users-repository.s
 import { ProfilesRepositoryService } from '../repositories/profiles/profiles-repository.service';
 import { TransactionService } from '../core/postgresql/transaction.service';
 import { EmailVerificationCodeRepositoryService } from '../repositories/email-verification-code/email-verification-code-repository.service';
-import { EmailVerificationCode } from '../repositories/entities/email-verification-code.entity';
+import { EmailVerificationCode } from '../repositories/entities/user/email-verification-code.entity';
 import { DefaultSuccessResponseDto } from '../common/response-dto/default-success.response-dto';
 import { JwtConfig } from '../config/configuration.types';
-import { User } from '../repositories/entities/user.entity';
+import { User } from '../repositories/entities/user/user.entity';
 import { SignUpResponseDto } from './response-dto/sign-up.response-dto';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInResponseDto } from './response-dto/sign-in.response-dto';
@@ -39,8 +39,8 @@ export class AuthService {
         transactionManager,
       );
 
-      await this.profilesRepositoryService.create(
-        user.id,
+      const profile = await this.profilesRepositoryService.create(
+        user,
         signUpDto,
         transactionManager,
       );
@@ -52,7 +52,12 @@ export class AuthService {
 
       // await this.emailService.sendEmailVerificationCode(user.email, code);
 
-      return new SignUpResponseDto();
+      const tokens = await this.generateTokens(user);
+
+      return plainToInstance(SignUpResponseDto, {
+        ...tokens,
+        profile,
+      });
     });
   }
 
